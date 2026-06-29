@@ -1,0 +1,4 @@
+npx -y http-server . -p 5500 --cors
+npm run dev
+http://localhost:5001/api-docs
+http://localhost:5500/

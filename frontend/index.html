@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KapChat — Connect Instantly</title>
+  <meta name="description" content="KapChat is a modern real-time chat application. Connect with friends, send messages, and share media instantly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=7" />
+</head>
+<body>
+
+  <!-- AUTH SCREEN -->
+  <div id="auth-screen" class="screen active">
+    <div class="auth-bg">
+      <div class="auth-blob blob1"></div>
+      <div class="auth-blob blob2"></div>
+      <div class="auth-blob blob3"></div>
+    </div>
+    <div class="auth-container">
+      <div class="auth-brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="url(#grad1)"/>
+            <path d="M12 14h16M12 20h10M12 26h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="28" cy="26" r="5" fill="white"/>
+            <path d="M26 26l1.5 1.5L30 24" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="grad1" x1="0" y1="0" x2="40" y2="40">
+                <stop offset="0%" stop-color="#7c3aed"/>
+                <stop offset="100%" stop-color="#4f46e5"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1 class="brand-name">KapChat</h1>
+        <p class="brand-tagline">Real conversations. Real time.</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Sign In</button>
+          <button class="tab-btn" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="login-email">Email address</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </span>
+              <input type="email" id="login-email" placeholder="you@example.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              <input type="password" id="login-password" placeholder="••••••••" required />
+              <button type="button" class="toggle-password" onclick="togglePassword('login-password')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="login-error" class="form-error hidden"></div>
+          <button type="submit" class="btn-primary" id="login-btn">
+            <span class="btn-text">Sign In</span>
+            <span class="btn-spinner hidden"></span>
+          </button>
+        </form>
+
+        <!-- SIGNUP FORM -->
+        <form id="signup-form" class="auth-form" onsubmit="handleSignup(event)">
+          <div class="form-group">
+            <label for="signup-username">Username</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <input type="text" id="signup-username" placeholder="johndoe" minlength="3" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="signup-email">Email address</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </span>
+              <input type="email" id="signup-email" placeholder="you@example.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              <input type="password" id="signup-password" placeholder="••••••••" minlength="6" required />
+              <button type="button" class="toggle-password" onclick="togglePassword('signup-password')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="signup-error" class="form-error hidden"></div>
+          <button type="submit" class="btn-primary" id="signup-btn">
+            <span class="btn-text">Create Account</span>
+            <span class="btn-spinner hidden"></span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP SCREEN -->
+  <div id="app-screen" class="screen">
+    <div class="app-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-brand">
+            <div class="brand-logo small" onclick="openSettingsDrawer()" style="cursor: pointer;">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="20" fill="url(#grad2)"/>
+                <path d="M12 14h16M12 20h10M12 26h13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="28" cy="26" r="5" fill="white"/>
+                <path d="M26 26l1.5 1.5L30 24" stroke="#7c3aed" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="grad2" x1="0" y1="0" x2="40" y2="40">
+                    <stop offset="0%" stop-color="#7c3aed"/>
+                    <stop offset="100%" stop-color="#4f46e5"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <span class="brand-name-small">KapChat</span>
+          </div>
+          <div class="sidebar-actions">
+            <button class="icon-btn" id="search-toggle-btn" onclick="toggleSearch()" title="Find Friends">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </button>
+            <button class="icon-btn" id="logout-btn" onclick="handleLogout()" title="Logout">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- User Profile Strip -->
+        <div class="user-profile-strip">
+          <div class="user-avatar-wrap">
+            <div class="user-avatar" id="my-avatar"></div>
+            <div class="status-dot online"></div>
+          </div>
+          <div class="user-info">
+            <span class="user-name" id="my-username">Loading...</span>
+            <span class="user-status">Online</span>
+          </div>
+          <button class="icon-btn switch-account-btn" onclick="handleLogout()" title="Switch Account">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+          </button>
+        </div>
+
+        <!-- Search Panel -->
+        <div class="search-panel hidden" id="search-panel">
+          <div class="search-input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" id="user-search-input" placeholder="Search people..." oninput="searchUsers()" />
+            <button onclick="closeSearch()" class="close-search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div id="search-results" class="search-results"></div>
+        </div>
+
+        <!-- Nav Tabs -->
+        <div class="sidebar-nav">
+          <button class="nav-tab active" onclick="switchSidebarTab('chats')" id="nav-chats">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Chats
+          </button>
+          <button class="nav-tab" onclick="switchSidebarTab('friends')" id="nav-friends">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Friends
+          </button>
+          <button class="nav-tab" onclick="switchSidebarTab('requests')" id="nav-requests">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            Requests
+            <span class="badge hidden" id="friends-badge">0</span>
+          </button>
+        </div>
+
+        <!-- Chats List -->
+        <div class="sidebar-content" id="chats-panel">
+          <div id="friends-list" class="friends-chat-list">
+            <div class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <p>No conversations yet</p>
+              <span>Search for people to start chatting</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Friends Panel -->
+        <div class="sidebar-content hidden" id="friends-panel">
+          <div class="friends-section">
+            <p class="section-label">Your Friends</p>
+            <div id="friends-panel-list" class="requests-list"></div>
+          </div>
+        </div>
+
+        <!-- Requests Panel -->
+        <div class="sidebar-content hidden" id="requests-panel">
+          <div class="friends-section">
+            <p class="section-label">Friend Requests</p>
+            <div id="incoming-requests" class="requests-list">
+              <div class="empty-state small">
+                <p>No pending requests</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CHAT AREA -->
+      <main class="chat-area" id="chat-area">
+        <!-- Empty State -->
+        <div class="chat-empty" id="chat-empty">
+          <div class="chat-empty-icon">
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="40" cy="40" r="40" fill="url(#g3)" opacity="0.15"/>
+              <path d="M20 28h40M20 40h25M20 52h32" stroke="url(#g3)" stroke-width="3" stroke-linecap="round"/>
+              <defs>
+                <linearGradient id="g3" x1="0" y1="0" x2="80" y2="80">
+                  <stop offset="0%" stop-color="#7c3aed"/>
+                  <stop offset="100%" stop-color="#4f46e5"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <h2>Welcome to KapChat</h2>
+          <p>Select a conversation from the sidebar<br/>or search for a friend to get started.</p>
+        </div>
+
+        <!-- Active Chat -->
+        <div class="chat-window hidden" id="chat-window">
+          <div class="chat-header">
+            <button class="icon-btn mobile-back" onclick="closeChatMobile()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <div class="chat-header-user" onclick="openContactProfile()" style="cursor: pointer;">
+              <div class="chat-header-avatar" id="chat-header-avatar"></div>
+              <div class="chat-header-info">
+                <span class="chat-header-name" id="chat-header-name">-</span>
+                <span class="chat-header-status" id="chat-header-status">Offline</span>
+              </div>
+            </div>
+            <div class="chat-header-actions">
+              <button class="icon-btn" title="View profile" onclick="openContactProfile()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="messages-container" id="messages-container">
+            <div id="messages-list" class="messages-list"></div>
+            <div class="typing-indicator hidden" id="typing-indicator">
+              <span id="typing-user-name"></span> is typing
+              <div class="typing-dots"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+
+            <div class="message-input-area">
+            <div class="message-input-toolbar">
+              <label for="file-upload" class="icon-btn upload-btn" title="Attach file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                <input type="file" id="file-upload" hidden onchange="handleFileUpload(event)" accept="image/*,video/*,.pdf,.doc,.docx"/>
+              </label>
+            </div>
+            
+            <div class="message-input-wrap" id="message-input-wrap">
+              <textarea id="message-input" placeholder="Type a message..." rows="1" onkeydown="handleMessageKeydown(event)" oninput="handleTyping()"></textarea>
+            </div>
+
+            <button class="send-btn" id="send-btn" onclick="sendMessage()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Contact Info Right Sidebar -->
+        <aside class="contact-profile hidden" id="contact-profile">
+          <div class="contact-profile-header">
+            <button class="icon-btn" onclick="closeContactProfile()" title="Close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <span>Contact Info</span>
+          </div>
+          <div class="contact-profile-content">
+            <div class="contact-profile-avatar-wrap">
+              <div class="contact-avatar large" id="contact-profile-avatar"></div>
+            </div>
+            <h2 class="contact-profile-name" id="contact-profile-name">Name</h2>
+            <p class="contact-profile-email" id="contact-profile-email">email@example.com</p>
+            
+            <div class="contact-profile-actions">
+              <button class="btn-subtle danger" style="width: 100%; margin-top: 20px;" onclick="removeFriend()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>
+                Remove Friend
+              </button>
+            </div>
+          </div>
+        </aside>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- SETTINGS DRAWER -->
+  <div id="settings-backdrop" class="settings-backdrop hidden" onclick="closeSettingsDrawer()"></div>
+  <aside id="settings-drawer" class="settings-drawer hidden">
+    <div class="settings-header">
+      <h2>Settings</h2>
+      <button class="icon-btn" onclick="closeSettingsDrawer()" title="Close Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    
+    <div class="settings-content">
+      <div class="settings-section">
+        <h3>Appearance</h3>
+        <div class="setting-item">
+          <span>Light Theme</span>
+          <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle" onchange="toggleTheme()">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="settings-section">
+        <h3>About Developer</h3>
+        <p class="about-text">Built with ♥ by Kapish.</p>
+        <p class="about-text">A modern real-time chat application designed for seamless communication.</p>
+      </div>
+    </div>
+    
+    <div class="settings-footer">
+      <p>&copy; 2026 KapChat. All rights reserved.</p>
+    </div>
+  </aside>
+
+  <!-- LIGHTBOX MODAL -->
+  <div id="lightbox-modal" class="lightbox hidden" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)" title="Close">&times;</button>
+    <img id="lightbox-image" src="" alt="Expanded preview" />
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/socket.io.min.js"></script>
+  <script src="js/api.js?v=6"></script>
+  <script src="js/socket.js?v=6"></script>
+  <script src="js/app.js?v=6"></script>
+</body>
+</html>
